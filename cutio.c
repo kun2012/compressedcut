@@ -202,8 +202,11 @@ void parseargs(int argc, char *argv[]) {
 		ok = 0;
 	}
 	if (!ok || optind < argc) {
-		fprintf (stderr, "hypercut [-c (0|1)][-b bucketSize][-s spfac][-r ruleset][-c (0|1)][-f comfac][-n bin]\n");
-		fprintf (stderr, "Type \"hypercut -h\" for help\n");
+		//fprintf (stderr, "hypercut [-c (0|1)][-b bucketSize][-s spfac][-r ruleset][-c (0|1)][-f comfac][-n bin]\n");
+
+		printf("compressedcuts [-b bucketSize][-s spfac][-f comfac][-r ruleset][-m (0|1)][-u pushup][-c (0|1)][-n bin][-i IPbin][-t 0|1][-h]\n");
+		//fprintf (stderr, "Type \"hypercut -h\" for help\n");
+		fprintf (stderr, "Type \"compressedcuts -h\" for help\n");
 		exit(1);
 	}
 
