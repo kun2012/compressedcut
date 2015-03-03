@@ -285,7 +285,7 @@ list<node*> nodeMerging(node * curr_node) {
 		}
 	}
 	if (num > curr_node->children.size()) {
-		printf("Odd: Of %d children, %d were identical\n",newlist.size(),num);
+		printf("Odd: Of %d children, %d were identical\n",(int)newlist.size(),(int)num);
 	}
 	return newlist;
 }

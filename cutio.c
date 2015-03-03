@@ -16,7 +16,7 @@ void PrintRule(pc_rule* rule)
 {
 	for (int i = 0; i < MAXDIMENSIONS; i++)
 	{
-		printf("[%u,%u]\t", rule->field[i].low, rule->field[i].high);
+		printf("[%u,%u]\t", (unsigned int)rule->field[i].low, (unsigned int)rule->field[i].high);
 	}
 	printf("%u\n", rule->priority);
 }
@@ -25,7 +25,7 @@ void PrintNode(node *curr_node)
 {
 	printf("Node at depth %u\n", curr_node->depth);
 	PrintRule(&curr_node->boundary);
-	printf("%u rules\n", curr_node->classifier.size());
+	printf("%u rules\n", (unsigned int)curr_node->classifier.size());
 	PrintRuleList(curr_node->classifier);
 }
 
@@ -441,8 +441,8 @@ void NodeStats(node *curr_node)
 			curr_node->children.size() == 0 && curr_node->problematic == 0) 
 	{
 		printf("Error: This node is not cut further!\n");
-	printf("\tIt has %u rules!\n", curr_node->classifier.size());
-	printf("\tactual-children: %u\n", curr_node->actual_children.size());
+	printf("\tIt has %u rules!\n", (unsigned int)curr_node->classifier.size());
+	printf("\tactual-children: %u\n", (unsigned int)curr_node->actual_children.size());
 	
 	PrintNode(curr_node);
 		exit(1);
@@ -450,7 +450,7 @@ void NodeStats(node *curr_node)
 
 	if (curr_node->problematic == 1 && curr_node->classifier.size() > TOO_MUCH)
 	{
-		printf("Error: This problematic node has %d rules!\n",curr_node->classifier.size());
+		printf("Error: This problematic node has %d rules!\n",(int)curr_node->classifier.size());
 		// Edit: JED 13/10/2014
 		// Allow nodes to stop with too many children if they can't split further
 		//exit(1);
@@ -459,7 +459,7 @@ void NodeStats(node *curr_node)
 	if (Num_Partitions != curr_node->children.size() 
 			&& curr_node->children.size() != 0 && compressionON == 0)
 	{
-		printf("Error: num children != partitions!(%d != %d)\n",curr_node->children.size(),Num_Partitions);
+		printf("Error: num children != partitions!(%d != %d)\n",(int)curr_node->children.size(),(int)Num_Partitions);
 		exit(1);
 	}
 
@@ -699,7 +699,7 @@ void PrintStats()
 
 void PrintTree(node* currNode)
 {
-	printf("Node: depth %u, %u children\n", currNode->depth, currNode->children.size());
+	printf("Node: depth %u, %u children\n", (unsigned int)currNode->depth, (unsigned int)currNode->children.size());
 	for (list<node*>::iterator iter = currNode->children.begin();
 		iter != currNode->children.end(); iter++)
 	{

@@ -617,7 +617,7 @@ node* CreateRootNode(list<pc_rule*> p_classifier)
 void create_tree(list <pc_rule*> p_classifier)
 {
 
-  printf("Incoming No of Rules in this tree = %d\n",p_classifier.size());
+  printf("Incoming No of Rules in this tree = %d\n",(int)p_classifier.size());
 
   list <node*> worklist;
   
@@ -667,7 +667,7 @@ void create_tree(list <pc_rule*> p_classifier)
 						&& (*item)->boundary.field[4].high == curr_node->boundary.field[4].high 
 						&& (*item)->classifier.size() == curr_node->classifier.size())
 				{
-					printf("Warning: parent and child are identical with %d rules!\n",curr_node->classifier.size());
+					printf("Warning: parent and child are identical with %d rules!\n",(int)curr_node->classifier.size());
 					(*item)->problematic = 1;
 					NodeStats(*item);
 					ClearMem(*item);
@@ -701,7 +701,7 @@ void create_tree(list <pc_rule*> p_classifier)
 
 	}
 	
-	printf("Outgoing number of rules in this tree = %u\n", root->classifier.size());
+	printf("Outgoing number of rules in this tree = %u\n", (unsigned int)root->classifier.size());
 
 }
 
@@ -948,8 +948,8 @@ int mainNormal(int argc, char* argv[])
 //  BinPack(2,Statistics);
 //  BinPack(3,Statistics);
 //  BinPack(4,Statistics);
-	printf("Correct: %u\n", isCorrect);
-	printf("Duration: %u us\n", elapsedTimeMicroSec);
+	printf("Correct: %u\n", (unsigned int)isCorrect);
+	printf("Duration: %u us\n", (unsigned int)elapsedTimeMicroSec);
 }
 
 
@@ -1143,9 +1143,9 @@ int mainAdd(int argc, char* argv[]) {
 		p_classifier.clear();
 	}
 	
-	printf("Classifier size: %u\n", classifier.size());
-	printf("Added classifier size: %u\n", addedRules.size());
-	printf("Base classifier size: %u\n", p_classifier.size());
+	printf("Classifier size: %u\n", (unsigned int)classifier.size());
+	printf("Added classifier size: %u\n", (unsigned int)addedRules.size());
+	printf("Base classifier size: %u\n", (unsigned int)p_classifier.size());
 	
 	PrintStats();
 	printf("Correct: %u\n", isCorrect);
@@ -1391,9 +1391,9 @@ int mainSub(int argc, char* argv[]) {
 		p_classifier.clear();
 	}
 	
-	printf("Classifier size: %u\n", classifier.size());
-	printf("Subtracted classifier size: %u\n", remainingRules.size());
-	printf("Base classifier size: %u\n", p_classifier.size());
+	printf("Classifier size: %u\n", (unsigned int)classifier.size());
+	printf("Subtracted classifier size: %u\n", (unsigned int)remainingRules.size());
+	printf("Base classifier size: %u\n", (unsigned int)p_classifier.size());
 	
 	PrintStats();
 	printf("Correct: %u\n", isCorrect);
