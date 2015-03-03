@@ -258,7 +258,7 @@ void ReadIPRange(FILE* fp, pc_rule &rule, int dim)
 		printf("ill-formatted IP rule\n");
 		exit(-1);
 	}
-	printf("%d.%d.%d.%d/%d\n", ip1, ip2, ip3, ip4, iplen);
+	//printf("%d.%d.%d.%d/%d\n", ip1, ip2, ip3, ip4, iplen);
 	IP2Range(ip1, ip2, ip3, ip4, iplen, &rule, dim);
 }
 
@@ -269,7 +269,7 @@ void ReadPortRange(FILE* fp, pc_rule &rule, int dim)
 		printf("ill-formatted port field\n");
 		exit(-1);
 	}
-	printf("%d : %d\n", min, max);
+	//printf("%d : %d\n", min, max);
 	rule.field[dim].low = min;
 	rule.field[dim].high = max;
 }
@@ -283,7 +283,7 @@ void ReadProtocol(FILE* fp, pc_rule &rule, int dim)
 		printf("Ill-formatted protocol field\n");
 		exit(-1);
 	}
-	printf("%d/%d\n", proto, len);
+	//printf("%d/%d\n", proto, len);
 	if (len == 0xff) {
 		rule.field[dim].low = proto;
 		rule.field[dim].high = proto;
