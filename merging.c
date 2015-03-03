@@ -428,18 +428,18 @@ void binRules(list<pc_rule> &ruleList) {
 				if (wild == 1) {
 					if (field[0] >= IPbin) {
 						littlerules[0].push_back(&(*itr));
-						printf("littlerules[0]\n");
+						//printf("littlerules[0]\n");
 					} else if (field[1] >= IPbin){
-						printf("littlerules[1]\n");
+						//printf("littlerules[1]\n");
 						littlerules[1].push_back(&(*itr));
 					} else if (field[2] >= IPbin) { 
 						littlerules[2].push_back(&(*itr));
 						//printf("littlerules[1]\n");
 					} else if (field[3] >= IPbin) {
-						printf("littlerules[3]\n");
+						//printf("littlerules[3]\n");
 						littlerules[3].push_back(&(*itr));
 					} else if (field[4] >= IPbin) {
-						printf("littlerules[4]\n");
+						//printf("littlerules[4]\n");
 						littlerules[4].push_back(&(*itr));
 					} else {
 						printf("ERROR: Rule had 1 wc but did not match any of the bins!\n");
@@ -481,6 +481,7 @@ void binRules(list<pc_rule> &ruleList) {
 	for (int l = 0; l < 5; l++) {
 		if (littlerules[l].size() > 0) {
 			numTrees++;
+			//Kun: Why no rulelists implementation?
 		}
 	}
 	if (smallrules.size() > 0) {

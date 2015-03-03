@@ -303,7 +303,7 @@ int loadrule(FILE * fp) {
 		fscanf(fp, "%c", &validfilter);
 		if (validfilter != '@') continue;
 		
-		printf("%d\n", ruleCount);
+		//printf("%d\n", ruleCount);
 		
 		for (int rep = 0; rep < numReps; rep++) {
 			int dim = rep * DIMS_PER_REP;
@@ -386,7 +386,7 @@ int ComputeCutoffs()
 	for (int i = 0;i < NUM_JUNK;i++)
 	{
 		Cutoffs[i] = numrules * Percents[i] / 100;
-		printf("Cutoffs[%d] = %lld\n",i,Cutoffs[i]);
+		printf("Cutoffs[%d] = %lld\n",i,Cutoffs[i]); //Kun: may not include all rules!!!
 	}
 	Num_Junk = NUM_JUNK;
 }
