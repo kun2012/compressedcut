@@ -19,15 +19,16 @@ int bucketSize = 16;
 double spfac = 8.0;
 FILE *fpr;
 int hypercuts = 1;
-int compressionON = 1;
-int binningON = 1;
-int mergingON = 1;
-int fineOn = 1;
-int num_intervals = 7;
-double bin = 0.5;
-double IPbin = 0.05;
-int thirtyone = 0;
-int Num_Rules_Moved_Up = 0;
+int compressionON = 1; //kun: compress contiguous sibling nodes or not
+int binningON = 1; //kun: separable trees
+int mergingON = 1; //kun: selective tree merging
+int fineOn = 1; //kun: use equi-dense cut or not
+int num_intervals = 7; //kun: upperbound of a node's children number
+//kun: identifying separable rules
+double bin = 0.5; //for non-ip dimension
+double IPbin = 0.05; //for ip dimension
+int thirtyone = 0; //thirtyone == 1 --> make a difference between rules with one and no wildcards
+int Num_Rules_Moved_Up = 0; //kun: compressedcut do not used the move up optimation.
 
 int numTrees = 0;
 
