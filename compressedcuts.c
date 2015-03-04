@@ -864,10 +864,16 @@ int mainNormal(int argc, char* argv[])
 		if (mergingON == 1)
 			MergeTrees();
 
+		list<TreeDetails> trees;
+
 		for (int i = 0; i < 5; i++) {
 			if (!(bigrules[i].empty())) {
 				InitStats(bigrules[i].size());
 				create_tree(bigrules[i]);
+				//Store tree, added by kun
+				TreeDetails details;
+				details.root = root;
+				trees.push_back(details);
 				RecordTreeStats();
 				bigrules[i].clear();
 			}
@@ -876,6 +882,10 @@ int mainNormal(int argc, char* argv[])
 			if (!(kindabigrules[j].empty())) {
 				InitStats(kindabigrules[j].size());
 				create_tree(kindabigrules[j]);
+				//Store tree, added by kun
+				TreeDetails details;
+				details.root = root;
+				trees.push_back(details);
 				RecordTreeStats();
 				kindabigrules[j].clear();
 			}
@@ -884,6 +894,10 @@ int mainNormal(int argc, char* argv[])
 			if (!(mediumrules[k].empty())) {
 				InitStats(mediumrules[k].size());
 				create_tree(mediumrules[k]);
+				//Store tree, added by kun
+				TreeDetails details;
+				details.root = root;
+				trees.push_back(details);
 				RecordTreeStats();
 				mediumrules[k].clear();
 			}
@@ -892,6 +906,10 @@ int mainNormal(int argc, char* argv[])
 			if (!(littlerules[l].empty())) {
 				InitStats(littlerules[l].size());
 				create_tree(littlerules[l]);
+				//Store tree, added by kun
+				TreeDetails details;
+				details.root = root;
+				trees.push_back(details);
 				RecordTreeStats();
 				mediumrules[l].clear();
 			}
@@ -899,6 +917,10 @@ int mainNormal(int argc, char* argv[])
 		if (!(smallrules.empty())) {
 			InitStats(smallrules.size());
 			create_tree(smallrules);
+			//Store tree, added by kun
+			TreeDetails details;
+			details.root = root;
+			trees.push_back(details);
 			RecordTreeStats();
 			smallrules.clear();
 		}
@@ -911,7 +933,8 @@ int mainNormal(int argc, char* argv[])
 			p_classifier.clear();
 		}*/
 		
-		// TODO : correctness testing
+		// Correctness testing, added by kun
+		isCorrect = CheckTrees(trees, p_classifier);
 	}
 	else
 	{

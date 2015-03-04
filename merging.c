@@ -13,7 +13,7 @@ void modifyrule(pc_rule boundary,pc_rule *rule)
 
 void remove_redund(node *curr_node)
 {
-
+	//kun: do nothing?
 }
 
 void remove_redund_skipped(node *curr_node)
@@ -481,7 +481,6 @@ void binRules(list<pc_rule> &ruleList) {
 	for (int l = 0; l < 5; l++) {
 		if (littlerules[l].size() > 0) {
 			numTrees++;
-			//Kun: Why no rulelists implementation?
 		}
 	}
 	if (smallrules.size() > 0) {
