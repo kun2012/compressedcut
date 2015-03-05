@@ -18,6 +18,7 @@ unsigned long long Cutoffs[NUM_JUNK];
 int bucketSize = 16;
 double spfac = 8.0;
 FILE *fpr;
+FILE *fpt; //Added by kun for trace file
 int hypercuts = 1;
 int compressionON = 1; //kun: compress contiguous sibling nodes or not
 int binningON = 1; //kun: separable trees
@@ -29,6 +30,8 @@ double bin = 0.5; //for non-ip dimension
 double IPbin = 0.05; //for ip dimension
 int thirtyone = 0; //thirtyone == 1 --> make a difference between rules with one and no wildcards
 int Num_Rules_Moved_Up = 0; //kun: compressedcut do not used the move up optimation.
+
+int trace_rule_num; //Added by kun
 
 int numTrees = 0;
 
@@ -51,7 +54,7 @@ int Avg_Degree;
 int Max_Degree;
 unsigned long long Max_WorklistSize;
 // Statistics
-// live records 
+// live records
 int Max_Depth;
 int Max_Levels;
 int Max_Cuts;

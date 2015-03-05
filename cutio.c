@@ -103,7 +103,7 @@ pc_rule get_bound(node *curr_node,int *offset)
 void parseargs(int argc, char *argv[]) {
 	int	c;
 	bool	ok = 1;
-	while ((c = getopt(argc, argv, "b:s:r:h:m:c:f:n:i:t:u:g:z:F:")) != -1) {
+	while ((c = getopt(argc, argv, "b:s:r:w:h:m:c:f:n:i:t:u:g:z:F:")) != -1) {
 		switch (c) {
 			case 'b':
 				bucketSize = atoi(optarg);
@@ -116,6 +116,9 @@ void parseargs(int argc, char *argv[]) {
 				break;
 			case 'r':
 				fpr = fopen(optarg, "r");
+				break;
+            case 'w': //Added by kun
+				fpt = fopen(optarg, "r");
 				break;
 			case 'm':
 				hypercuts = atoi(optarg);

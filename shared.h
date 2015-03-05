@@ -33,6 +33,7 @@ extern unsigned long long Cutoffs[NUM_JUNK];
 extern int bucketSize;
 extern double spfac;
 extern FILE *fpr;
+extern FILE *fpt;  //Added by kun for trace file
 extern int hypercuts;
 extern int compressionON;
 extern int binningON;
@@ -45,6 +46,8 @@ extern int thirtyone;
 extern int Num_Rules_Moved_Up;
 
 extern int numTrees;
+
+extern int trace_rule_num; //Added by kun
 
 // tree related
 extern list <pc_rule> classifier;
@@ -65,7 +68,7 @@ extern int Avg_Degree;
 extern int Max_Degree;
 extern unsigned long long Max_WorklistSize;
 // Statistics
-// live records 
+// live records
 extern int Max_Depth;
 extern int Max_Levels;
 extern int Max_Cuts;

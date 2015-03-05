@@ -13,12 +13,13 @@
  * Original program written by Balajee Vamanan, Gwendolyn Voskuilen and T. N. Vijaykumar
  * of Purdue University
  * Changes made by James Daly as marked
- * Several speed test was added by kun
+ * Several tests was added by kun
  */
 extern int MAXDIMENSIONS;
 extern int numReps;
 
 #define KUN_SPEED_TEST
+#define MAX_TRACES 100000
 
 #define MAX_ALLOWED_LEVELS 200
 
@@ -221,4 +222,17 @@ int ColorOfList(list<pc_rule*> rules, unsigned long long *pt);
 int ColorOfTree(node* tree, unsigned long long * pt);
 int ColorOfTrees(list<TreeDetails> trees, unsigned long long *pt);
 bool CheckTrees(list<TreeDetails> trees, list<pc_rule*> rules);
+
+//Data structure and function for trace reading, added by kun
+struct flow {
+    unsigned int src_ip;
+    unsigned int dst_ip;
+    unsigned int src_port;
+    unsigned int dst_port;
+    unsigned int proto;
+    unsigned int trueRID;
+};
+
+struct flow* read_trace_file(FILE* traceFile);
+
 #endif

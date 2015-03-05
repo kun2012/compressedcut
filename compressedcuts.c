@@ -848,7 +848,6 @@ int mainNormal(int argc, char* argv[])
 	printf("number of rules read from file = %d\n", numrules);
 #endif
 
-	gettimeofday(&startTime, NULL);
 
 	classifier.clear();
 	int numrules1 = loadrule(fpr);
@@ -862,13 +861,13 @@ int mainNormal(int argc, char* argv[])
 
 	ComputeCutoffs();
 
+	list<TreeDetails> trees;
+
 	if (binningON == 1)
 	{
 		binRules(classifier);
 		if (mergingON == 1)
 			MergeTrees();
-
-		list<TreeDetails> trees;
 
 		for (int i = 0; i < 5; i++) {
 			if (!(bigrules[i].empty())) {
@@ -957,14 +956,33 @@ int mainNormal(int argc, char* argv[])
 			RecordTreeStats();
 			p_classifier.clear();
 		}
-		list<TreeDetails> trees;
 		TreeDetails details;
 		details.root = root;
 		trees.push_back(details);
-		isCorrect = CheckTrees(trees, p_classifier);
+		//isCorrect = CheckTrees(trees, p_classifier);
 	}
 
+    struct flow *flows = read_trace_file(fpt);
+    int error_cnt = 0;
+    unsigned long long pt[MAXDIMENSIONS];
+
+	gettimeofday(&startTime, NULL);
+
+    for (int i = 0; i < trace_rule_num; i++) {
+        pt[0] = flows[i].src_ip;
+        pt[1] = flows[i].dst_ip;
+        pt[2] = flows[i].src_port;
+        pt[3] = flows[i].dst_port;
+        pt[4] = flows[i].proto;
+        if (ColorOfTrees(trees, pt) != flows[i].trueRID - 1) {
+            printf("%d %d\n", ColorOfTrees(trees, pt), flows[i].trueRID - 1);
+            printf("i=%d\n", i);
+            exit(1);
+            error_cnt++;
+        }
+    }
 	gettimeofday(&endTime, NULL);
+
 	elapsedTimeMicroSec = (endTime.tv_sec - startTime.tv_sec) * 1000000;
 	elapsedTimeMicroSec += (endTime.tv_usec - startTime.tv_usec);
 
@@ -977,8 +995,10 @@ int mainNormal(int argc, char* argv[])
 //  BinPack(2,Statistics);
 //  BinPack(3,Statistics);
 //  BinPack(4,Statistics);
-	printf("Correct: %u\n", (unsigned int)isCorrect);
+    printf("Correctness: %d\n",isCorrect);
+	printf("Error count: %d\n", error_cnt);
 	printf("Duration: %u us\n", (unsigned int)elapsedTimeMicroSec);
+    printf("Query per second: %.2fMqps\n", (double)trace_rule_num / (double)elapsedTimeMicroSec);
 }
 
 
