@@ -38,7 +38,7 @@ void remove_redund_skipped(node *curr_node)
 			rulelist.push_back(*rule);
 		}
 	}
-	// Now add back the rules 
+	// Now add back the rules
 	curr_node->classifier.clear();
 	curr_node->classifier = rulelist;
 	curr_node->classifier.unique(myequal);
@@ -62,7 +62,7 @@ void SortChildren()
 	childlist_sorted.clear();
 
 	for (int i = 0; i < childlist.size();i++)
-	{ 
+	{
 		int found = 0;
 		for (list <node*>::iterator item = childlist.begin();
 				item != childlist.end();++item)
@@ -94,7 +94,7 @@ void SortChildren()
 }
 
 
-// makes a = a + b 
+// makes a = a + b
 void createBoundary(node *a,node *b,node *c)
 {
 	for (int i = 0;i < MAXDIMENSIONS;i++)
@@ -135,7 +135,7 @@ int LogicalMerge(node* a,node* b,int Max)
 	int maxsize = (asize > bsize) ? asize : bsize;
 
 	if (c->classifier.size() <= bucketSize ||
-			((c->classifier.size() <= maxsize) && 
+			((c->classifier.size() <= maxsize) &&
 			 (c->classifier.size() < Max)) )
 	{
 		cp_node(c,a);
@@ -225,7 +225,7 @@ void moveRulesUp(node* curr_node) {
 			}
 		}
 	}
-	
+
 	if (rulesMovedUp.size() > Num_Rules_Moved_Up) {
 		// truncate to first bucketSize children
 		rulesMovedUp.resize(Num_Rules_Moved_Up);
@@ -235,7 +235,7 @@ void moveRulesUp(node* curr_node) {
 	if (emptyIntersect) {
 		for(list<pc_rule*>::iterator setptr = rulesMovedUp.begin();setptr != rulesMovedUp.end();setptr++)
 		{
-		//setptr--;		
+		//setptr--;
 		for (list <node*>::iterator item = (curr_node->children).begin();item != (curr_node->children).end();++item) {
 			for (list<pc_rule*>::iterator ptr = (*item)->classifier.begin();ptr != (*item)->classifier.end();ptr++) {
 				if (*setptr == *ptr) {
@@ -261,7 +261,7 @@ list<node*> nodeMerging(node * curr_node) {
 /*	for(list<node*>::iterator junk = curr_node->children.begin(); junk != curr_node->children.end();junk++) {
 		remove_redund(junk++);
 	}*/
-	
+
 	for (list<node*>::iterator itr1 = newlist.begin(); itr1 != newlist.end(); itr1++) {
 		itr2 = itr1;
 		itr2++;
@@ -291,32 +291,32 @@ list<node*> nodeMerging(node * curr_node) {
 }
 
 void regionCompaction(node * curr_node) {
-	list<unsigned long long> f0, f1, f2, f3, f4; 
+	list<unsigned long long> f0, f1, f2, f3, f4;
 	for (list<pc_rule*>::iterator itr = (curr_node->classifier).begin();itr != (curr_node->classifier).end();itr++) {
-		if ((**itr).field[0].low < curr_node->boundary.field[0].low) { f0.push_back(curr_node->boundary.field[0].low);} 
+		if ((**itr).field[0].low < curr_node->boundary.field[0].low) { f0.push_back(curr_node->boundary.field[0].low);}
 		else { f0.push_back((**itr).field[0].low);}
-		if ((**itr).field[0].high > curr_node->boundary.field[0].high) {f0.push_back(curr_node->boundary.field[0].high);} 
+		if ((**itr).field[0].high > curr_node->boundary.field[0].high) {f0.push_back(curr_node->boundary.field[0].high);}
 		else { f0.push_back((**itr).field[0].high);}
 
-		if ((**itr).field[1].low < curr_node->boundary.field[1].low) { f1.push_back(curr_node->boundary.field[1].low);} 
+		if ((**itr).field[1].low < curr_node->boundary.field[1].low) { f1.push_back(curr_node->boundary.field[1].low);}
 		else { f1.push_back((**itr).field[1].low);}
-		if ((**itr).field[1].high > curr_node->boundary.field[1].high) {f1.push_back(curr_node->boundary.field[1].high);} 
+		if ((**itr).field[1].high > curr_node->boundary.field[1].high) {f1.push_back(curr_node->boundary.field[1].high);}
 		else { f1.push_back((**itr).field[1].high);}
 
-		if ((**itr).field[2].low < curr_node->boundary.field[2].low) { f2.push_back(curr_node->boundary.field[2].low);} 
+		if ((**itr).field[2].low < curr_node->boundary.field[2].low) { f2.push_back(curr_node->boundary.field[2].low);}
 		else { f2.push_back((**itr).field[2].low);}
-		if ((**itr).field[2].high > curr_node->boundary.field[2].high) {f2.push_back(curr_node->boundary.field[2].high);} 
+		if ((**itr).field[2].high > curr_node->boundary.field[2].high) {f2.push_back(curr_node->boundary.field[2].high);}
 		else { f2.push_back((**itr).field[2].high);}
 
-		if ((**itr).field[3].low < curr_node->boundary.field[3].low) { f3.push_back(curr_node->boundary.field[3].low);} 
+		if ((**itr).field[3].low < curr_node->boundary.field[3].low) { f3.push_back(curr_node->boundary.field[3].low);}
 		else { f3.push_back((**itr).field[3].low);}
-		if ((**itr).field[3].high > curr_node->boundary.field[3].high) {f3.push_back(curr_node->boundary.field[3].high);} 
+		if ((**itr).field[3].high > curr_node->boundary.field[3].high) {f3.push_back(curr_node->boundary.field[3].high);}
 		else { f3.push_back((**itr).field[3].high);}
 
-		if ((**itr).field[4].low < curr_node->boundary.field[4].low) { f4.push_back(curr_node->boundary.field[4].low);} 
+		if ((**itr).field[4].low < curr_node->boundary.field[4].low) { f4.push_back(curr_node->boundary.field[4].low);}
 		else { f4.push_back((**itr).field[4].low);}
-		if ((**itr).field[4].high > curr_node->boundary.field[4].high) {f4.push_back(curr_node->boundary.field[4].high);} 
-		else { f4.push_back((**itr).field[4].high);}		
+		if ((**itr).field[4].high > curr_node->boundary.field[4].high) {f4.push_back(curr_node->boundary.field[4].high);}
+		else { f4.push_back((**itr).field[4].high);}
 	}
 	f0.sort();
 	f1.sort();
@@ -340,7 +340,7 @@ void binRules(list<pc_rule> &ruleList) {
 	int min, wild;
 	int secondmin, thirdmin;
 	double field[5];
-	
+
 	int count = 0;
 	for (list<pc_rule>::iterator itr = ruleList.begin(); itr != ruleList.end(); itr++) {
 		count++;
@@ -432,7 +432,7 @@ void binRules(list<pc_rule> &ruleList) {
 					} else if (field[1] >= IPbin){
 						//printf("littlerules[1]\n");
 						littlerules[1].push_back(&(*itr));
-					} else if (field[2] >= IPbin) { 
+					} else if (field[2] >= IPbin) {
 						littlerules[2].push_back(&(*itr));
 						//printf("littlerules[1]\n");
 					} else if (field[3] >= IPbin) {
@@ -489,8 +489,10 @@ void binRules(list<pc_rule> &ruleList) {
 	} else {
 		rulelists[25] = 0;
 	}
-	
+
+#ifndef KUN_SPEED_TEST
 	cout << "Number of rules binned: " << count << endl;
+#endif
 }
 
 /*
@@ -498,7 +500,9 @@ void binRules(list<pc_rule> &ruleList) {
  *	Will try to merge trees that have no more than one field that is not overlapping (i.e. where one tree is WC and one tree is not)
  */
 void MergeTrees() {
+#ifndef KUN_SPEED_TEST
 	printf("Number of trees before merge: %d\n",numTrees);
+#endif
 	int merged[26]; // array - if the value is 0 than that try is not merged, if it is 1 it has been and is NOT a candidate for merging anymore!
 	for (int i = 0; i < 26; i++) { merged[i] = 0; } // make sure array is initialized to 0
 
@@ -635,7 +639,7 @@ void MergeTrees() {
 			rulelists[19] = 0;
 			merged[5] = 1;
 			numTrees--;
-		}	
+		}
 	}
 	if (rulelists[6] == 1) {
 		if (rulelists[15] == 1 && !(merged[15])) {
@@ -653,7 +657,7 @@ void MergeTrees() {
 			rulelists[20] = 0;
 			merged[6] = 1;
 			numTrees--;
-		}	
+		}
 	}
 	if (rulelists[7] == 1) {
 		if (rulelists[15] == 1 && !(merged[15])) {
@@ -671,7 +675,7 @@ void MergeTrees() {
 			rulelists[21] = 0;
 			merged[7] = 1;
 			numTrees--;
-		}	
+		}
 	}
 	if (rulelists[8] == 1) {
 		if (rulelists[16] == 1 && !(merged[16])) {
@@ -689,7 +693,7 @@ void MergeTrees() {
 			rulelists[22] = 0;
 			merged[8] = 1;
 			numTrees--;
-		}	
+		}
 	}
 	if (rulelists[9] == 1) {
 		if (rulelists[16] == 1 && !(merged[16])) {
@@ -707,7 +711,7 @@ void MergeTrees() {
 			rulelists[23] = 0;
 			merged[9] = 1;
 			numTrees--;
-		}	
+		}
 	}
 	if (rulelists[10] == 1) {
 		if (rulelists[17] == 1 && !(merged[17])) {
@@ -725,7 +729,7 @@ void MergeTrees() {
 			rulelists[24] = 0;
 			merged[10] = 1;
 			numTrees--;
-		}	
+		}
 	}
 	if (rulelists[11] == 1) {
 		if (rulelists[19] == 1 && !(merged[19])) {
@@ -743,7 +747,7 @@ void MergeTrees() {
 			rulelists[22] = 0;
 			merged[11] = 1;
 			numTrees--;
-		}	
+		}
 	}
 	if (rulelists[12] == 1) {
 		if (rulelists[19] == 1 && !(merged[19])) {
@@ -761,7 +765,7 @@ void MergeTrees() {
 			rulelists[23] = 0;
 			merged[12] = 1;
 			numTrees--;
-		}	
+		}
 	}
 	if (rulelists[13] == 1) {
 		if (rulelists[20] == 1 && !(merged[20])) {
@@ -779,7 +783,7 @@ void MergeTrees() {
 			rulelists[24] = 0;
 			merged[13] = 1;
 			numTrees--;
-		}	
+		}
 	}
 	if (rulelists[14] == 1) {
 		if (rulelists[22] == 1 && !(merged[22])) {
@@ -797,9 +801,9 @@ void MergeTrees() {
 			rulelists[24] = 0;
 			merged[14] = 1;
 			numTrees--;
-		}	
+		}
 	}
-#if 0	
+#if 0
 	for (int i = 0; i < 9; i++) {
 		if (rulelists[i+15] == 1 && rulelists[25] == 1) {
 			mediumrules[i].merge(smallrules,mycomparison);
@@ -809,8 +813,10 @@ void MergeTrees() {
 			break;
 		}
 	}
-#endif	
+#endif
+#ifndef KUN_SPEED_TEST
 	printf("Number of trees after merge: %d\n",numTrees);
+#endif
 }
 
 
@@ -860,12 +866,12 @@ void BinPack(int bins,list <TreeStat*> Statistics)
 
 		if ((*iter)->Max_Levels > ADJUSTED_OVERALL_LEVELS)
 			ADJUSTED_OVERALL_LEVELS = (*iter)->Max_Levels;
-			
+
 		if ((*iter)->Max_Access64Bit > accessCosts64)
 			accessCosts64 = (*iter)->Max_Access64Bit;
 		if ((*iter)->Max_Access128Bit > accessCosts128)
 			accessCosts128 = (*iter)->Max_Access128Bit;
-		
+
 		printf("Channel %d: Depth = %d Levels = %d Memory = %llu;Trees - ",count++,
 							(*iter)->Max_Depth,(*iter)->Max_Levels,(*iter)->total_memory);
 		for (auto sub_iter = (*iter)->Trees.begin(); sub_iter != (*iter)->Trees.end();sub_iter++)

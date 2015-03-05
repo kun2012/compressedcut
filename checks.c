@@ -56,7 +56,7 @@ bool mystatsort(TreeStat* first,TreeStat* second)
   {
     return true;
   }
-  else 
+  else
   {
     if (first->Max_Depth == second->Max_Depth)
     {
@@ -82,7 +82,7 @@ bool mymemsort(MemBin* first,MemBin* second)
   {
     return true;
   }
-  else 
+  else
   {
     if (first->Max_Depth == second->Max_Depth)
     {
@@ -186,8 +186,8 @@ bool is_present(pc_rule boundary,pc_rule *rule)
        (rule->field[4].low  >= boundary.field[4].low  && rule->field[4].high <= boundary.field[4].high)) )  // completely inside the range
   {
     return true;
-  } 
-  else 
+  }
+  else
   {
     return false;
   }
@@ -278,7 +278,7 @@ int ColorOfList(list<pc_rule*> rules, unsigned long long *pt)
 			return (*iter)->priority;
 		}
 	}
-	
+
 	// No match
 	return -1;
 }
@@ -290,7 +290,7 @@ int ColorOfTree(node* tree, unsigned long long * pt)
 		if (pt[dim] < tree->boundary.field[dim].low || pt[dim] > tree->boundary.field[dim].high)
 			return -1; // Out of bounds
 	}
-	
+
 	if (tree->actual_children.size() == 0)
 	{
 		// Check list
@@ -299,10 +299,10 @@ int ColorOfTree(node* tree, unsigned long long * pt)
 	else
 	{
 		// Check children
-		
+
 		int color = -1;
-	
-		for (list<node*>::iterator iter = tree->actual_children.begin(); 
+
+		for (list<node*>::iterator iter = tree->actual_children.begin();
 				iter != tree->actual_children.end(); iter++)
 		{
 			if (DoesRuleContainPoint(&(*iter)->boundary, pt))
@@ -312,18 +312,18 @@ int ColorOfTree(node* tree, unsigned long long * pt)
 					color = c;
 			}
 		}
-		
+
 		return color;
-		
+
 		/**
 		// Apparently they have some combination of keeping around multiple copies and not doing so
 		// Which makes figuring out which child we want a complete pain in the butt.
 		// So we don't actually try to compute it because it will be wrong
-		
+
 		// Compute Index
 		int index = 0;
 		cout << "Building an index" << endl;
-		
+
 		for (int i = 0; i < MAXDIMENSIONS; i++)
 		{
 			range bound = tree->boundary.field[i];
@@ -332,7 +332,7 @@ int ColorOfTree(node* tree, unsigned long long * pt)
 			boundSize /= numParts;
 			int x = (pt[i] - bound.low);
 			int dimIndex = x / boundSize;
-			
+
 			if (dimIndex >= numParts)
 			{
 				cout << "bound: [" << bound.low << "," << bound.high << "]" << endl;
@@ -340,15 +340,15 @@ int ColorOfTree(node* tree, unsigned long long * pt)
 				cout << "num cuts: " << numParts << endl;
 				cout << "index: " << dimIndex << endl;
 			}
-			
+
 			index *= numParts;
 			index += dimIndex;
-			
+
 			cout << numParts << endl;
 		}
-		
+
 		cout << "Index is " << index << endl;
-		
+
 		if (index > tree->children.size())
 		{
 			cout << "... but there are only " << tree->children.size() << " children" << endl;
@@ -356,19 +356,19 @@ int ColorOfTree(node* tree, unsigned long long * pt)
 			cout << tree->Row << " " << tree->Column << endl;
 			exit(1);
 		}
-		
+
 		// <rant>why is it a list instead of a vector? we need random access</rant>
 		list<node*>::iterator iter = tree->children.begin();
 		for (int i = 0; i < index; i++)
 		{
 			iter++;
 		}
-		
+
 		return ColorOfTree(*iter, pt);
-		
+
 		*/
 	}
-	
+
 	// No match
 	return -1;
 }
@@ -376,7 +376,7 @@ int ColorOfTree(node* tree, unsigned long long * pt)
 int ColorOfTrees(list<TreeDetails> trees, unsigned long long *pt)
 {
 	int color = -1;
-	
+
 	for (list<TreeDetails>::iterator iter = trees.begin(); iter != trees.end(); iter++)
 	{
 		int c = ColorOfTree(iter->root, pt);
@@ -384,11 +384,11 @@ int ColorOfTrees(list<TreeDetails> trees, unsigned long long *pt)
 		if (color < 0 || (c < color && c >= 0))
 			color = c;
 	}
-	
+
 	return color;
 }
 
-bool CheckRule(list<TreeDetails> trees, list<pc_rule*> rules, pc_rule* rule, 
+bool CheckRule(list<TreeDetails> trees, list<pc_rule*> rules, pc_rule* rule,
 		unsigned long long *pt, int dim)
 {
 	if (dim >= MAXDIMENSIONS)
@@ -398,7 +398,7 @@ bool CheckRule(list<TreeDetails> trees, list<pc_rule*> rules, pc_rule* rule,
 		int listColor = ColorOfList(rules, pt);
 		//cout << "Expected color: " << listColor << endl;
 		int treeColor = ColorOfTrees(trees, pt);
-		
+
 		if (listColor == treeColor)
 		{
 			return true;
@@ -412,7 +412,7 @@ bool CheckRule(list<TreeDetails> trees, list<pc_rule*> rules, pc_rule* rule,
 			}
 			cout << endl;
 			cout << "expected " << listColor << " found " << treeColor << endl;
-			
+
 			return false;
 		}
 	}
@@ -431,7 +431,7 @@ bool CheckRule(list<TreeDetails> trees, list<pc_rule*> rules, pc_rule* rule,
 			if (!CheckRule(trees, rules, rule, pt, dim + 1))
 				return false;
 		}
-		
+
 		// Test upper outside
 		if (rule->field[dim].high < UpperBounds[dim])
 		{
@@ -439,17 +439,17 @@ bool CheckRule(list<TreeDetails> trees, list<pc_rule*> rules, pc_rule* rule,
 			if (!CheckRule(trees, rules, rule, pt, dim + 1))
 				return false;
 		}
-		
+
 		// Test lower inside
 		pt[dim] = rule->field[dim].low;
 		if (!CheckRule(trees, rules, rule, pt, dim + 1))
 			return false;
-		
+
 		// Test upper inside
 		pt[dim] = rule->field[dim].high;
 		if (!CheckRule(trees, rules, rule, pt, dim + 1))
 			return false;
-			
+
 		return true;
 	}
 }
@@ -462,7 +462,8 @@ bool CheckTrees(list<TreeDetails> trees, list<pc_rule*> rules)
 		if (!CheckRule(trees, rules, *iter, pt, 0))
 			return false;
 	}
-	
+#ifndef KUN_SPEED_TEST
 	cout << "All Matched" << endl;
+#endif
 	return true;
 }

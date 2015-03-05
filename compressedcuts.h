@@ -13,9 +13,13 @@
  * Original program written by Balajee Vamanan, Gwendolyn Voskuilen and T. N. Vijaykumar
  * of Purdue University
  * Changes made by James Daly as marked
+ * Several speed test was added by kun
  */
 extern int MAXDIMENSIONS;
 extern int numReps;
+
+#define KUN_SPEED_TEST
+
 #define MAX_ALLOWED_LEVELS 200
 
 #define PTR_SIZE 4
@@ -54,7 +58,7 @@ struct pc_rule{
   unsigned sip[4], dip[4];
 };
 
-struct node 
+struct node
 {
   int depth;
   int problematic;
@@ -65,16 +69,16 @@ struct node
   list <node *> actual_children;
   vector<int> cuts;
   //int cuts[MAXDIMENSIONS];
-  // this is used only if this node is a result 
+  // this is used only if this node is a result
   // of cutting in 2D
   int Row;
   int Column;
   int Index;
 
   bool is_compressed;
-  
+
   int count;
-  
+
 public:
 	node();
 	~node();
@@ -177,7 +181,7 @@ void RecordTreeStats();
 
 void moveRulesUp(node* curr_node);
 int samerules(node * r1, node * r2);
-list<node*> nodeMerging(node * curr_node); 
+list<node*> nodeMerging(node * curr_node);
 void regionCompaction(node * curr_node);
 void create_tree(list <pc_rule*> p_classifier);
 //void node* CreateTreeFromRuleList(list<pc_rule*> p_classifier);

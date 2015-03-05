@@ -11,7 +11,7 @@ int numReps = 1;
 node::node()
 {
 	cuts.resize(MAXDIMENSIONS);
-	
+
 	depth = 0;
 	problematic = 0;
 	node_has_rule = 0;
@@ -20,15 +20,15 @@ node::node()
 	{
 		cuts[i] = 0;
 	}
-	
-	// this is used only if this node is a result 
+
+	// this is used only if this node is a result
 	// of cutting in 2D
 	Row = 0;
 	Column = 0;
 	Index = 0;
 
 	is_compressed = 0;
-	
+
 	count = 0;
 }
 
@@ -78,14 +78,14 @@ void calc_dimensions_to_cut(node *curr_node,int *select_dim)
           break;
         }
       }
-      if (!found) 
+      if (!found)
         rangelist.push_back(check);
     }
     unique_elements[i] = rangelist.size();
       //printf("unique_elements[%d] = %d\n",i,unique_elements[i]);
 
   }
-  
+
   int dims_cnt = 0;
   for (int i = 0;i < MAXDIMENSIONS;++i)
   {
@@ -116,7 +116,7 @@ void calc_dimensions_to_cut(node *curr_node,int *select_dim)
 	if (unique_elements[i] != average && curr_node->boundary.field[i].high > curr_node->boundary.field[i].low)
 		areEqual = false;
   }
-  
+
   if (areEqual)
   {
 	cout << "all are equal" << endl;
@@ -126,7 +126,7 @@ void calc_dimensions_to_cut(node *curr_node,int *select_dim)
 		{
 			cout << i << " " << unique_elements[i] << endl;
 			select_dim[i] = 1;
-			return;	
+			return;
 		}
 	}
   }
@@ -147,7 +147,7 @@ void calc_dimensions_to_cut(node *curr_node,int *select_dim)
             break;
         }
       }
-      else 
+      else
       {
         if (unique_elements[i] == max)
         {
@@ -199,7 +199,7 @@ void calc_num_cuts_1D(node *root,int dim)
         prev_depth = curr_node->depth;
         Index = 0;
       }
-      else 
+      else
         break;
     }
 
@@ -223,7 +223,7 @@ void calc_num_cuts_1D(node *root,int dim)
         child->cuts[i] = 1;
 
       for (list <pc_rule*>::iterator rule = curr_node->classifier.begin();rule != curr_node->classifier.end();
-          ++rule) 
+          ++rule)
       {
         if (is_present(child->boundary,(*rule)) == true)
         {
@@ -305,7 +305,7 @@ void calc_num_cuts_2D(node *root,int *dim)
         prev_depth = curr_node->depth;
         //      printf("---------------------------------------\n");
       }
-      else 
+      else
         break;
     }
 
@@ -332,7 +332,7 @@ void calc_num_cuts_2D(node *root,int *dim)
         child->cuts[i] = 1;
 
       for (list <pc_rule*>::iterator rule = curr_node->classifier.begin();rule != curr_node->classifier.end();
-          ++rule) 
+          ++rule)
       {
         if (is_present(child->boundary,*rule) == true)
         {
@@ -414,14 +414,14 @@ void calc_cuts(node *curr_node)
 
 	// cout << "depth = " << curr_node->depth << endl;
 	// cout << curr_node->classifier.size() << " rules" << endl;
-	 
+
   if (chosen_cnt > 2)
   {
     printf("Error: More than 2 dimensions are cut!\n");
     exit(1);
   }
 
-  if (chosen_cnt > 1 && hypercuts == 0) 
+  if (chosen_cnt > 1 && hypercuts == 0)
   {
     printf("Error: Hicut: More than 1 dimensions are cut!\n");
     exit(1);
@@ -439,16 +439,16 @@ void calc_cuts(node *curr_node)
 		calc_num_cuts_2D(curr_node,chosen_dim);
 	else
 		CalcEquiCuts2D(curr_node, chosen_dim);
-  } 
+  }
   else if (chosen_cnt == 1)
   {
     if (!fineOn)
 		calc_num_cuts_1D(curr_node,chosen_dim[0]);
-	else 
+	else
 		CalcMultiEquiCuts1D(curr_node, chosen_dim[0]);
 		//CalcEquiCuts1D(curr_node, chosen_dim[0]);
   }
-	
+
 
 
 // for (int i = 0;i < chosen_cnt;i++)
@@ -458,13 +458,13 @@ void calc_cuts(node *curr_node)
 
 void AddRuleToTree(node* rootNode, pc_rule* rule)
 {
-	
+
 	if (rootNode->actual_children.size() == 0)
 	{
 		// We're actually going to charge as though inserting into a vector
 		updateReads += rootNode->classifier.size();
 		updateWrites++; // New rule is added
-		
+
 		int addCost = rootNode->classifier.size();
 		list<pc_rule*>::iterator iter;
 		for (iter = rootNode->classifier.begin();
@@ -475,7 +475,7 @@ void AddRuleToTree(node* rootNode, pc_rule* rule)
 		}
 		rootNode->classifier.insert(iter, rule);
 		updateWrites += addCost;
-		
+
 		if (rootNode->classifier.size() > bucketSize)
 		{
 			CutRecursive(rootNode);
@@ -485,9 +485,9 @@ void AddRuleToTree(node* rootNode, pc_rule* rule)
 	{
 		// Adding the rule to this list simply because of how the stats tallying later work
 		rootNode->classifier.push_front(rule);
-		
+
 		// Check children
-		for (list<node*>::iterator iter = rootNode->actual_children.begin(); 
+		for (list<node*>::iterator iter = rootNode->actual_children.begin();
 				iter != rootNode->actual_children.end(); iter++)
 		{
 			updateReads++; // Must look at each child node
@@ -504,7 +504,7 @@ void AddRuleToTree(node* rootNode, pc_rule* rule)
 			}
 		}
 	}
-	
+
 	if (rootNode->classifier.size() > bucketSize && rootNode->children.size() == 0)
 	{
 		printf("Node has too many rules and no children");
@@ -516,13 +516,13 @@ void RemoveRuleFromTree(node* rootNode, pc_rule* rule)
 {
 	// Cost of visiting this node
 	updateReads++;
-	
+
 	// 1st: seek rule and remove
 	int numMoved = rootNode->classifier.size();
 	for (list<pc_rule*>::iterator iter = rootNode->classifier.begin();
 			iter != rootNode->classifier.end(); iter++)
 	{
-		
+
 		if (myequal(rule, *iter))
 		{
 			rootNode->classifier.erase(iter);
@@ -530,7 +530,7 @@ void RemoveRuleFromTree(node* rootNode, pc_rule* rule)
 		}
 		numMoved--; // Deleted rule counts : need a new blank rule at the end of the list
 	}
-	
+
 	if (rootNode->actual_children.size() > 0)
 	{
 		// We did actually just delete this from the node
@@ -538,11 +538,11 @@ void RemoveRuleFromTree(node* rootNode, pc_rule* rule)
 		updateReads += rootNode->classifier.size();
 		updateWrites += numMoved;
 	}
-	
+
 	if (rootNode->classifier.size() < bucketSize)
 	{
 		// Drop children
-		for (list<node*>::iterator iter = rootNode->actual_children.begin(); 
+		for (list<node*>::iterator iter = rootNode->actual_children.begin();
 				iter != rootNode->actual_children.end(); iter++)
 		{
 			// Must read the child's rule list to copy it
@@ -550,19 +550,19 @@ void RemoveRuleFromTree(node* rootNode, pc_rule* rule)
 			// TODO : get delete correct
 			//delete * iter;
 		}
-		
+
 		// Cost of writing the "new" rule list
 		updateWrites += rootNode->classifier.size();
 		// TODO : this cost is still slightly undersized
 		// Doesn't consider the difficulty of figuring out how big the rule list actually is
 		// Without keeping the actual sublists around
-		
+
 		rootNode->actual_children.clear();
 	}
 	else
 	{
 		// Recurse
-		for (list<node*>::iterator iter = rootNode->actual_children.begin(); 
+		for (list<node*>::iterator iter = rootNode->actual_children.begin();
 				iter != rootNode->actual_children.end(); iter++)
 		{
 			if (DoRulesIntersect(rule, &(*iter)->boundary))
@@ -575,7 +575,7 @@ void RemoveRuleFromTree(node* rootNode, pc_rule* rule)
 
 node* CreateRootNode(list<pc_rule*> p_classifier)
 {
-	// create a currNode node, put all rules in it. 
+	// create a currNode node, put all rules in it.
 	node* currNode = new node;
 	currNode->depth = 1;
 	for (int i = 0;i < MAXDIMENSIONS;++i) {
@@ -584,14 +584,14 @@ node* CreateRootNode(list<pc_rule*> p_classifier)
 			currNode->boundary.field[i].high = 0xffffffff;
 		else if (i < 4)
 			currNode->boundary.field[i].high = 0xffff;
-		else 
+		else
 			currNode->boundary.field[i].high = 0xff;
 	}
 	currNode->children.clear();
 	for (int i=0;i < MAXDIMENSIONS;i++)
 		currNode->cuts[i] = 1;
 
-	for (list <pc_rule*>::iterator i = p_classifier.begin();i != p_classifier.end();++i) 
+	for (list <pc_rule*>::iterator i = p_classifier.begin();i != p_classifier.end();++i)
 	{
 		currNode->classifier.push_back((*i));
 	}
@@ -610,25 +610,27 @@ node* CreateRootNode(list<pc_rule*> p_classifier)
 	// printf("currNode rule count: %u\n", currNode->classifier.size());
 	// printf("currNode depth: %u\n", currNode->depth);
 	// printf("currNode children count: %u\n", currNode->children.size());
-	
+
 	return currNode;
 }
 
 void create_tree(list <pc_rule*> p_classifier)
 {
-
+#ifndef KUN_SPEED_TEST
   printf("Incoming No of Rules in this tree = %d\n",(int)p_classifier.size());
+#endif
 
   list <node*> worklist;
-  
-  
+
+
 
   node *curr_node;
 
   root = CreateRootNode(p_classifier);
-  
+#ifndef KUN_SPEED_TEST
   cout << "Initial root size = " << root->classifier.size() << endl;
-  
+#endif
+
 	if (root->classifier.size() > bucketSize)
 		worklist.push_back(root);
 	else
@@ -643,28 +645,28 @@ void create_tree(list <pc_rule*> p_classifier)
 
 		// printf("Popped node!\n");
 		// printf("Depth: %u\n", curr_node->depth);
-		
+
 		worklist.pop_back();
 
 		list<node*> topush;
 		CutNode(curr_node, topush);
-	
+
 		for (list <node*>::iterator item = topush.begin();
 				item != topush.end();++item)
 		{
-			
+
 			if ((*item)->classifier.size() > bucketSize)
 			{
-				if ((*item)->boundary.field[0].low == curr_node->boundary.field[0].low 
-						&& (*item)->boundary.field[0].high == curr_node->boundary.field[0].high 
-						&& (*item)->boundary.field[1].low == curr_node->boundary.field[1].low 
-						&& (*item)->boundary.field[1].high == curr_node->boundary.field[1].high 
-						&& (*item)->boundary.field[2].low == curr_node->boundary.field[2].low 
-						&& (*item)->boundary.field[2].high == curr_node->boundary.field[2].high 
-						&& (*item)->boundary.field[3].low == curr_node->boundary.field[3].low 
-						&& (*item)->boundary.field[3].high == curr_node->boundary.field[3].high 
-						&& (*item)->boundary.field[4].low == curr_node->boundary.field[4].low 
-						&& (*item)->boundary.field[4].high == curr_node->boundary.field[4].high 
+				if ((*item)->boundary.field[0].low == curr_node->boundary.field[0].low
+						&& (*item)->boundary.field[0].high == curr_node->boundary.field[0].high
+						&& (*item)->boundary.field[1].low == curr_node->boundary.field[1].low
+						&& (*item)->boundary.field[1].high == curr_node->boundary.field[1].high
+						&& (*item)->boundary.field[2].low == curr_node->boundary.field[2].low
+						&& (*item)->boundary.field[2].high == curr_node->boundary.field[2].high
+						&& (*item)->boundary.field[3].low == curr_node->boundary.field[3].low
+						&& (*item)->boundary.field[3].high == curr_node->boundary.field[3].high
+						&& (*item)->boundary.field[4].low == curr_node->boundary.field[4].low
+						&& (*item)->boundary.field[4].high == curr_node->boundary.field[4].high
 						&& (*item)->classifier.size() == curr_node->classifier.size())
 				{
 					printf("Warning: parent and child are identical with %d rules!\n",(int)curr_node->classifier.size());
@@ -693,27 +695,28 @@ void create_tree(list <pc_rule*> p_classifier)
 				ClearMem(*item);
 			}
 		}
-		
+
 		curr_node->problematic = 0;
 		NodeStats(curr_node);
 
 		ClearMem(curr_node);
 
 	}
-	
+#ifndef KUN_SPEED_TEST
 	printf("Outgoing number of rules in this tree = %u\n", (unsigned int)root->classifier.size());
+#endif
 
 }
 
 void CutRecursive(node* curr_node)
 {
 	updateWrites++; // Cost of updating this node and it's child pointers
-	
+
 	if (curr_node->classifier.size() > bucketSize)
 	{
 		// Not charging read cost: already know all of the rules
 		// updateReads += curr_node->classifier.size()
-		
+
 		list<node*> topush;
 		CutNode(curr_node, topush);
 		for (list<node*>::iterator iter = curr_node->actual_children.begin();
@@ -725,7 +728,7 @@ void CutRecursive(node* curr_node)
 			CutRecursive(*iter);
 		}
 	}
-	
+
 }
 
 void CutNode(node* curr_node, list<node*> &topush)
@@ -755,8 +758,8 @@ void CutNode(node* curr_node, list<node*> &topush)
 
 	if (compressionON) {
 		moveRulesUp(curr_node);
-		  
-		// backup the number of children, incase compression 
+
+		// backup the number of children, incase compression
 		// can't fit in!
 		list <node*> Backup;
 		for (list <node*>::iterator item = curr_node->children.begin();
@@ -773,7 +776,7 @@ void CutNode(node* curr_node, list<node*> &topush)
 		if (curr_node->children.size() > num_intervals)
 		{
 			// printf("Before: %d\n",curr_node->children.size());
-			// clear the current children 
+			// clear the current children
 			for (list <node*>::iterator item = curr_node->children.begin();
 				item != curr_node->children.end();++item)
 			{
@@ -806,17 +809,17 @@ void CutNode(node* curr_node, list<node*> &topush)
 		Backup.clear();
 	}
 
-	
+
 	if (compressionON == 0 && hypercuts) {
 		// HEURISTIC 4
 		moveRulesUp(curr_node);
 	}
-	
+
 	// HEURISTIC 1 - create a list of nodes that should actually exist - both leaf and non-leaf
 	topush = nodeMerging(curr_node);
 
 	// HEURISTIC 2
-	for (list <node*>::iterator item = topush.begin();item != topush.end();++item) 
+	for (list <node*>::iterator item = topush.begin();item != topush.end();++item)
 	{
 		remove_redund(*item);
 		curr_node->actual_children.push_back(*item);
@@ -827,7 +830,7 @@ void CutNode(node* curr_node, list<node*> &topush)
 
 int mainNormal(int argc, char* argv[])
 {
-	int i,j; 
+	int i,j;
 	int header[MAXDIMENSIONS];
 	int matchid, fid;
 	char *s = (char *)calloc(200, sizeof(char));
@@ -835,17 +838,18 @@ int mainNormal(int argc, char* argv[])
 
 	struct timeval startTime, endTime;
 	long elapsedTimeMicroSec;
-	
+
 	parseargs(argc, argv);
 
 	while(fgets(s, 200, fpr) != NULL)numrules++;
 	rewind(fpr);
 
-
+#ifndef KUN_SPEED_TEST
 	printf("number of rules read from file = %d\n", numrules);
+#endif
 
 	gettimeofday(&startTime, NULL);
-	
+
 	classifier.clear();
 	int numrules1 = loadrule(fpr);
 
@@ -932,7 +936,7 @@ int mainNormal(int argc, char* argv[])
 			RecordTreeStats();
 			p_classifier.clear();
 		}*/
-		
+
 		// Correctness testing, added by kun
 		isCorrect = CheckTrees(trees, p_classifier);
 	}
@@ -959,13 +963,15 @@ int mainNormal(int argc, char* argv[])
 		trees.push_back(details);
 		isCorrect = CheckTrees(trees, p_classifier);
 	}
-	
+
 	gettimeofday(&endTime, NULL);
 	elapsedTimeMicroSec = (endTime.tv_sec - startTime.tv_sec) * 1000000;
 	elapsedTimeMicroSec += (endTime.tv_usec - startTime.tv_usec);
-	
+
 	// Statistics
+#ifndef KUN_SPEED_TEST
 	PrintStats();
+#endif
 
 //  BinPack(1,Statistics);
 //  BinPack(2,Statistics);
@@ -977,7 +983,7 @@ int mainNormal(int argc, char* argv[])
 
 
 int mainAdd(int argc, char* argv[]) {
-	int i,j; 
+	int i,j;
 	int header[MAXDIMENSIONS];
 	int matchid, fid;
 	char *s = (char *)calloc(200, sizeof(char));
@@ -1002,37 +1008,37 @@ int mainAdd(int argc, char* argv[]) {
 	fclose(fpr);
 
 	ComputeCutoffs();
-	
-	
+
+
 	int start = 0;
 	int end = classifier.size();
 	int split = end / 2;
 	list<pc_rule*> addedRules;
 	LoadRulePtr(classifier, addedRules, start, split);
 	LoadRulePtr(classifier, p_classifier, start, end);
-	
+
 	cout << classifier.size() << endl;
 	cout << addedRules.size() << endl;
 	cout << p_classifier.size() << endl;
-	
+
 	if (binningON)
 	{
 		list<TreeDetails> trees;
-		
+
 		list<pc_rule> baseRuleList;
-		
+
 		list<pc_rule>::iterator indexer = classifier.begin();
 		for (int i = 0; i < split; i++)
 			indexer++;
 		for ( ; indexer != classifier.end(); indexer++)
 			baseRuleList.push_back(*indexer);
-			
+
 		cout << "Base rule list size: " << baseRuleList.size() << endl;
-		
+
 		binRules(baseRuleList);
-		
+
 		//cout << "Num Trees: " << numTrees << endl;
-		
+
 		if (mergingON)
 		{
 			cout << "Merging trees" << endl;
@@ -1042,45 +1048,45 @@ int mainAdd(int argc, char* argv[]) {
 		{
 			cout << "Skipping merge step" << endl;
 		}
-		
+
 		//printf("Preparing to make trees\n");
-		
+
 		int count = 0;
 		for (int i = 0; i < 5; i++) {
 			count += bigrules[i].size();
 			Treeify(trees, bigrules[i]);
 		}
-		
+
 		//printf("Big Trees made\n");
-		
+
 		for (int j = 0; j < 10; j++) {
 			count += kindabigrules[j].size();
 			Treeify(trees, kindabigrules[j]);
 		}
-		
+
 		//printf("Kinda big trees made\n");
-		
+
 		for (int k = 0; k < 10; k++) {
 			count += mediumrules[k].size();
 			Treeify(trees, mediumrules[k]);
 		}
-		
+
 		//printf("Medium trees made\n");
-		
+
 		for (int l = 0; l < 5; l++) {
 			count += mediumrules[l].size();
 			Treeify(trees, littlerules[l]);
 		}
-		
+
 		//printf("Little trees made\n");
-		
+
 		count += smallrules.size();
 		Treeify(trees, smallrules);
-		
+
 		cout << "Base has " << count << " rules" << endl;
-		
+
 		//printf("All trees made\n");
-		
+
 		int ruleCount = 0;
 		for (list<TreeDetails>::iterator iter = trees.begin();
 				iter != trees.end(); iter++)
@@ -1093,8 +1099,8 @@ int mainAdd(int argc, char* argv[]) {
 		cout << ruleCount << endl;
 		//cout << addedRules.size() << endl;
 		//cout << p_classifier.size() << endl;
-		
-		
+
+
 		for (list<pc_rule*>::iterator iter = addedRules.begin();
 				iter != addedRules.end();
 				iter++)
@@ -1108,8 +1114,8 @@ int mainAdd(int argc, char* argv[]) {
 				exit(1);
 			}
 		}
-		
-		
+
+
 		for (list<TreeDetails>::reverse_iterator iter = trees.rbegin();
 				iter != trees.rend();
 				iter++)
@@ -1119,9 +1125,7 @@ int mainAdd(int argc, char* argv[]) {
 			root = iter->root;
 			RecordTreeStats();
 		}
-		
-		
-		
+
 		isCorrect = CheckTrees(trees, p_classifier);
 	}
 	else
@@ -1130,9 +1134,9 @@ int mainAdd(int argc, char* argv[]) {
 		LoadRulePtr(classifier, baseRuleList, split + 1, end);
 		InitStats(p_classifier.size());
 		create_tree(baseRuleList);
-		
+
 		//PrintTree(root);
-		
+
 		for (list<pc_rule*>::reverse_iterator iter = addedRules.rbegin();
 			iter != addedRules.rend();
 			iter++)
@@ -1141,35 +1145,33 @@ int mainAdd(int argc, char* argv[]) {
 			AddRuleToTree(root, *iter);
 			//PrintRule(*iter);
 		}
-		
+
 		// printf("More root stats\n");
 		// printf("Root has rules: %u\n", root->node_has_rule);
 		// printf("Root rule count: %u\n", root->classifier.size());
 		// printf("Root depth: %u\n", root->depth);
 		// printf("Root children count: %u\n", root->children.size());
-		
+
 		InitStats(classifier.size());
 		StatNode(root);
-		
-		
+
 		RecordTreeStats();
-		
-		
+
 		list<TreeDetails> trees;
 		TreeDetails details;
 		details.root = root;
 		trees.push_back(details);
 		isCorrect = CheckTrees(trees, p_classifier);
-		
+
 		delete root;
-		
+
 		p_classifier.clear();
 	}
-	
+
 	printf("Classifier size: %u\n", (unsigned int)classifier.size());
 	printf("Added classifier size: %u\n", (unsigned int)addedRules.size());
 	printf("Base classifier size: %u\n", (unsigned int)p_classifier.size());
-	
+
 	PrintStats();
 	printf("Correct: %u\n", isCorrect);
 }
@@ -1198,7 +1200,7 @@ void Treeify(list<TreeDetails> &trees, list<pc_rule*> &rules)
 		create_tree(rules);
 		TreeDetails details;
 		details.root = root;
-		
+
 		// This part isn't quite right because of tree merging
 		pc_rule* rule = *rules.begin();
 		for (int i = 0; i < MAXDIMENSIONS; i++)
@@ -1229,17 +1231,17 @@ node* FindSuitableTree(list<TreeDetails> & trees, pc_rule* rule)
 			}
 		}
 		//cout << endl;
-		
+
 		if (isAllowed)
 		{
 			//cout << "Using tree # " << count << " of " << trees.size() << endl;
 			return iter->root;
 		}
 	}
-	
+
 	cout << "no matching tree found" << endl;
 	PrintRule(rule);
-	
+
 	for (list<TreeDetails>::iterator iter = trees.begin();
 			iter != trees.end(); iter++)
 	{
@@ -1253,7 +1255,7 @@ node* FindSuitableTree(list<TreeDetails> & trees, pc_rule* rule)
 }
 
 int mainSub(int argc, char* argv[]) {
-	int i,j; 
+	int i,j;
 	int header[MAXDIMENSIONS];
 	int matchid, fid;
 	char *s = (char *)calloc(200, sizeof(char));
@@ -1278,25 +1280,25 @@ int mainSub(int argc, char* argv[]) {
 	fclose(fpr);
 
 	ComputeCutoffs();
-	
-	
+
+
 	int start = 0;
 	int end = classifier.size();
 	int split = end / 2;
-	
+
 	list<pc_rule*> subbedRules;
 	list<pc_rule*> remainingRules;
 	LoadRulePtr(classifier, subbedRules, start, split);
 	LoadRulePtr(classifier, remainingRules, split+1, end);
 	LoadRulePtr(classifier, p_classifier, start, end);
-	
-	
+
+
 	if (binningON)
 	{
 		list<TreeDetails> trees;
-		
+
 		binRules(classifier);
-		
+
 		if (mergingON)
 		{
 			cout << "Merging trees" << endl;
@@ -1306,45 +1308,45 @@ int mainSub(int argc, char* argv[]) {
 		{
 			cout << "Skipping merge step" << endl;
 		}
-		
+
 		int count = 0;
 		for (int i = 0; i < 5; i++) {
 			count += bigrules[i].size();
 			Treeify(trees, bigrules[i]);
 		}
-		
+
 		for (int j = 0; j < 10; j++) {
 			count += kindabigrules[j].size();
 			Treeify(trees, kindabigrules[j]);
 		}
-		
+
 		for (int k = 0; k < 10; k++) {
 			count += mediumrules[k].size();
 			Treeify(trees, mediumrules[k]);
 		}
-		
+
 		for (int l = 0; l < 5; l++) {
 			count += mediumrules[l].size();
 			Treeify(trees, littlerules[l]);
 		}
-		
+
 		count += smallrules.size();
 		Treeify(trees, smallrules);
-		
+
 		cout << "Base has " << count << " rules" << endl;
-		
+
 		//printf("All trees made\n");
-		
+
 		int ruleCount = 0;
 		for (list<TreeDetails>::iterator iter = trees.begin();
 				iter != trees.end(); iter++)
 		{
 			ruleCount += iter->root->classifier.size();
 		}
-		
+
 		cout << ruleCount << endl;
-		
-		
+
+
 		for (list<pc_rule*>::iterator iter = subbedRules.begin();
 				iter != subbedRules.end();
 				iter++)
@@ -1358,8 +1360,8 @@ int mainSub(int argc, char* argv[]) {
 				exit(1);
 			}
 		}
-		
-		
+
+
 		for (list<TreeDetails>::iterator iter = trees.begin();
 				iter != trees.end();
 				iter++)
@@ -1372,16 +1374,16 @@ int mainSub(int argc, char* argv[]) {
 				RecordTreeStats();
 			}
 		}
-		
+
 		isCorrect = CheckTrees(trees, remainingRules);
 	}
 	else
 	{
 		InitStats(p_classifier.size());
 		create_tree(p_classifier);
-		
+
 		//PrintTree(root);
-		
+
 		for (list<pc_rule*>::iterator iter = subbedRules.begin();
 			iter != subbedRules.end();
 			iter++)
@@ -1389,35 +1391,35 @@ int mainSub(int argc, char* argv[]) {
 			//printf("About to add a new rule\n");
 			RemoveRuleFromTree(root, *iter);
 		}
-		
+
 		// printf("More root stats\n");
 		// printf("Root has rules: %u\n", root->node_has_rule);
 		// printf("Root rule count: %u\n", root->classifier.size());
 		// printf("Root depth: %u\n", root->depth);
 		// printf("Root children count: %u\n", root->children.size());
-		
+
 		InitStats(classifier.size());
 		StatNode(root);
-		
-		
+
+
 		RecordTreeStats();
-		
-		
+
+
 		list<TreeDetails> trees;
 		TreeDetails details;
 		details.root = root;
 		trees.push_back(details);
 		isCorrect = CheckTrees(trees, remainingRules);
-		
+
 		delete root;
-		
+
 		p_classifier.clear();
 	}
-	
+
 	printf("Classifier size: %u\n", (unsigned int)classifier.size());
 	printf("Subtracted classifier size: %u\n", (unsigned int)remainingRules.size());
 	printf("Base classifier size: %u\n", (unsigned int)p_classifier.size());
-	
+
 	PrintStats();
 	printf("Correct: %u\n", isCorrect);
 }

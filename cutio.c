@@ -50,7 +50,7 @@ pc_rule get_bound(node *curr_node,int *offset)
 		boundary.field[i].low = curr_node->boundary.field[i].low + offset[i] * interval;
 		if (offset[i] == curr_node->cuts[i] - 1)
 			boundary.field[i].high = curr_node->boundary.field[i].high;
-		else 
+		else
 			if (interval == 0)
 				boundary.field[i].high = boundary.field[i].low;
 			else
@@ -159,7 +159,7 @@ void parseargs(int argc, char *argv[]) {
 	if(bucketSize <= 0){
 		printf("bucketSize should be > 0\n");
 		ok = 0;
-	}	
+	}
 
 	if(spfac < 0){
 		printf("space factor should be >= 0\n");
@@ -210,6 +210,7 @@ void parseargs(int argc, char *argv[]) {
 		exit(1);
 	}
 
+#ifndef KUN_SPEED_TEST
 	printf("******************************************\n");
 	printf("Bucket Size =	%d\n", bucketSize);
 	printf("Space Factor = %f\n", spfac);
@@ -222,6 +223,7 @@ void parseargs(int argc, char *argv[]) {
 	printf("mergingON = %d\n",mergingON);
 	printf("num_intervals = %d\n",num_intervals);
 	printf("******************************************\n");
+#endif
 }
 
 void cp_node(node* src,node* dest)
@@ -296,15 +298,15 @@ void ReadProtocol(FILE* fp, pc_rule &rule, int dim)
 int loadrule(FILE * fp) {
 	char validfilter;
 	pc_rule rule;
-	
+
 	int ruleCount = 0;
-	
+
 	while (!feof(fp)) {
 		fscanf(fp, "%c", &validfilter);
 		if (validfilter != '@') continue;
-		
+
 		//printf("%d\n", ruleCount);
-		
+
 		for (int rep = 0; rep < numReps; rep++) {
 			int dim = rep * DIMS_PER_REP;
 			ReadIPRange(fp, rule, dim);
@@ -332,7 +334,7 @@ int loadrule(FILE * fp) {
 	// while(1) {
 		// wild = 0;
 		// if(fscanf(fp,"@%u.%u.%u.%u/%u\t%u.%u.%u.%u/%u\t%llu : %llu\t%llu : %llu\t%x/%x\t%x/%x\n",
-					// &sip1, &sip2, &sip3, &sip4, &siplen, &dip1, &dip2, &dip3, &dip4, &diplen, 
+					// &sip1, &sip2, &sip3, &sip4, &siplen, &dip1, &dip2, &dip3, &dip4, &diplen,
 					// &rule.field[2].low, &rule.field[2].high, &rule.field[3].low, &rule.field[3].high,
 					// &proto, &protomask, &junk, &junkmask) != 18) break;
 		// rule.siplen = siplen;
@@ -386,7 +388,9 @@ int ComputeCutoffs()
 	for (int i = 0;i < NUM_JUNK;i++)
 	{
 		Cutoffs[i] = numrules * Percents[i] / 100;
+#ifndef KUN_SPEED_TEST
 		printf("Cutoffs[%d] = %lld\n",i,Cutoffs[i]); //Kun: may not include all rules!!!
+#endif
 	}
 	Num_Junk = NUM_JUNK;
 }
@@ -439,14 +443,14 @@ void NodeStats(node *curr_node)
 	if (mcuts > Max_Cuts)
 		Max_Cuts = mcuts;
 
-	// checks 
-	if ( curr_node->classifier.size() > bucketSize && 
-			curr_node->children.size() == 0 && curr_node->problematic == 0) 
+	// checks
+	if ( curr_node->classifier.size() > bucketSize &&
+			curr_node->children.size() == 0 && curr_node->problematic == 0)
 	{
 		printf("Error: This node is not cut further!\n");
 	printf("\tIt has %u rules!\n", (unsigned int)curr_node->classifier.size());
 	printf("\tactual-children: %u\n", (unsigned int)curr_node->actual_children.size());
-	
+
 	PrintNode(curr_node);
 		exit(1);
 	}
@@ -459,7 +463,7 @@ void NodeStats(node *curr_node)
 		//exit(1);
 	}
 
-	if (Num_Partitions != curr_node->children.size() 
+	if (Num_Partitions != curr_node->children.size()
 			&& curr_node->children.size() != 0 && compressionON == 0)
 	{
 		printf("Error: num children != partitions!(%d != %d)\n",(int)curr_node->children.size(),(int)Num_Partitions);
@@ -518,16 +522,16 @@ void NodeStats(node *curr_node)
 		exit(1);
 	}
 
-	
+
 	int Actual_Curr_Level = curr_node->depth;
-	
+
 
 	if (curr_node->is_compressed != true && !fineOn)
 		Actual_Curr_Level++;
 
 	if (Actual_Curr_Level > Max_Levels)
 	{
-		
+
 		Max_Levels = Actual_Curr_Level;
 		//printf("[Tree %d] currently at level %d ...with %d children\n",p_record->Id,Max_Levels,curr_node->children.size());
 		if (Max_Levels > MAX_ALLOWED_LEVELS)
@@ -545,12 +549,12 @@ void NodeStats(node *curr_node)
 	}
 
 	int depth = curr_node->depth + (curr_node->children.empty() ? curr_node->classifier.size() : 0);
-	int cost64 = curr_node->depth * INTERNAL_COST_64 + 
+	int cost64 = curr_node->depth * INTERNAL_COST_64 +
 		(curr_node->children.empty() ? curr_node->classifier.size() * RULE_COST_64 : 0);
-	int cost128 = curr_node->depth * INTERNAL_COST_128 + 
+	int cost128 = curr_node->depth * INTERNAL_COST_128 +
 		(curr_node->children.empty() ? curr_node->classifier.size() * RULE_COST_128 : 0);
-	
-	
+
+
 	if (depth > Max_Depth)
 		Max_Depth = depth;
 	if (cost64 > Max_Access64Bit) {
@@ -558,7 +562,7 @@ void NodeStats(node *curr_node)
 	}
 	if (cost128 > Max_Access128Bit)
 		Max_Access128Bit = cost128;
-	
+
 	if (curr_node->children.size() != 0)
 		Total_Array_Size += curr_node->children.size();
 	else
@@ -683,10 +687,10 @@ void PrintStats()
 	printf("OVERALL_MEMORY: %lld\n",OVERALL_MEMORY);
 	printf("OVERALL_DEPTH: %d\n",OVERALL_DEPTH);
 	printf("OVERALL_LEVELS: %d\n",OVERALL_LEVELS);
-	
+
 	printf("SUM_COST64: %d\n", sumCost64);
 	printf("SUM_COST128: %d\n", sumCost128);
-	
+
 	printf("Update Reads: %d\n", updateReads);
 	printf("Update Writes: %d\n", updateWrites);
 
@@ -714,14 +718,14 @@ void StatNode(node* currNode)
 {
 	//printf("node size: %u rules %u children %u actual\n", currNode->classifier.size(), currNode->children.size(), currNode->actual_children.size());
 	NodeStats(currNode);
-	
+
 	if (currNode->count > 0)
 	{
 		printf("Node has been visited %u times before!\n", currNode->count);
 	}
-	
+
 	currNode->count++;
-	
+
 	for (list<node*>::iterator iter = currNode->actual_children.begin();
 			iter != currNode->actual_children.end(); iter++)
 	{
@@ -732,7 +736,7 @@ void StatNode(node* currNode)
 void RecordTreeStats()
 {
 	p_record->Max_Depth = Max_Depth;
-	
+
 	p_record->Max_Access64Bit = Max_Access64Bit;
 	p_record->Max_Access128Bit = Max_Access128Bit;
 
@@ -743,7 +747,7 @@ void RecordTreeStats()
 	p_record->Rules_at_the_Leaf = Rules_at_the_Leaf;
 
 	p_record->Rules_along_path = Rules_along_path;
-	
+
 	p_record->Total_Rule_Size = Total_Rule_Size;
 
 	p_record->Total_Rules_Moved_Up = Total_Rules_Moved_Up;
@@ -770,12 +774,12 @@ void RecordTreeStats()
 
 	p_record->leaf_node_memory = LEAF_NODE_SIZE * (Node_Count - NonLeaf_Node_Count);
 
-	p_record->compressed_int_node_memory = (INTERNAL_NODE_SIZE + INTERVAL_SIZE * num_intervals) * 
+	p_record->compressed_int_node_memory = (INTERNAL_NODE_SIZE + INTERVAL_SIZE * num_intervals) *
 																				Compressed_NonLeaf_Node_Count;
 
 	p_record->uncompressed_int_node_memory = INTERNAL_NODE_SIZE * Uncompressed_NonLeaf_Node_Count;
 
-	p_record->total_memory = p_record->ruleptr_memory + p_record->array_memory + p_record->leaf_node_memory 
+	p_record->total_memory = p_record->ruleptr_memory + p_record->array_memory + p_record->leaf_node_memory
 													+ p_record->compressed_int_node_memory + p_record->uncompressed_int_node_memory;
 
 	p_record->total_memory_in_KB = p_record->total_memory / 1024;
@@ -797,20 +801,20 @@ void IP2Range(unsigned ip1,unsigned ip2,unsigned ip3,unsigned ip4,unsigned iplen
 		Lo = tmp;
 		Hi = Lo + (1<<(32-iplen)) - 1;
 	}else if(iplen > 8 && iplen <= 16){
-		tmp =	ip1 << 24; 
+		tmp =	ip1 << 24;
 		tmp += ip2 << 16;
 		Lo = tmp;
 		Hi = Lo + (1<<(32-iplen)) - 1;
 	}else if(iplen > 16 && iplen <= 24){
-		tmp = ip1 << 24; 
-		tmp += ip2 << 16; 
-		tmp += ip3 << 8; 
+		tmp = ip1 << 24;
+		tmp += ip2 << 16;
+		tmp += ip3 << 8;
 		Lo = tmp;
 		Hi = Lo + (1<<(32-iplen)) - 1;
 	}else if(iplen > 24 && iplen <= 32){
-		tmp = ip1 << 24; 
-		tmp += ip2 << 16; 
-		tmp += ip3 << 8; 
+		tmp = ip1 << 24;
+		tmp += ip2 << 16;
+		tmp += ip3 << 8;
 		tmp += ip4;
 		Lo = tmp;
 		Hi = Lo + (1<<(32-iplen)) - 1;
@@ -836,7 +840,7 @@ void LoadRulePtr(list <pc_rule> &rule_list,list <pc_rule*> &ruleptr_list,int sta
 {
 	printf("Rule:%d - %d\n",start,end);
 	int count = 0;
-	for (list <pc_rule>::iterator i = rule_list.begin();i != rule_list.end();++i) 
+	for (list <pc_rule>::iterator i = rule_list.begin();i != rule_list.end();++i)
 	{
 		if (count >= start && count <= end)
 			ruleptr_list.push_back(&(*i));
