@@ -936,8 +936,10 @@ int mainNormal(int argc, char* argv[])
 			p_classifier.clear();
 		}*/
 
+#ifndef KUN_SPEED_TEST
 		// Correctness testing, added by kun
 		isCorrect = CheckTrees(trees, p_classifier);
+#endif
 	}
 	else
 	{
@@ -992,9 +994,11 @@ int mainNormal(int argc, char* argv[])
 //  BinPack(2,Statistics);
 //  BinPack(3,Statistics);
 //  BinPack(4,Statistics);
+#ifndef KUN_SPEED_TEST
     printf("Correctness: %d\n",isCorrect);
 	printf("Error count: %d\n", error_cnt);
 	printf("Duration: %u us\n", (unsigned int)elapsedTimeMicroSec);
+#endif
     printf("Query per second: %.2fMqps\n", (double)trace_rule_num / (double)elapsedTimeMicroSec);
 }
 
