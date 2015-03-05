@@ -318,6 +318,7 @@ int loadrule(FILE * fp) {
 			ReadPortRange(fp, rule, dim + 3);
 			ReadProtocol(fp, rule, dim + 4);
 		}
+        rule.priority = ruleCount; //Added by kun!!!
 		classifier.push_back(rule);
 		ruleCount++;
 	}

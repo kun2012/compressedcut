@@ -975,9 +975,6 @@ int mainNormal(int argc, char* argv[])
         pt[3] = flows[i].dst_port;
         pt[4] = flows[i].proto;
         if (ColorOfTrees(trees, pt) != flows[i].trueRID - 1) {
-            printf("%d %d\n", ColorOfTrees(trees, pt), flows[i].trueRID - 1);
-            printf("i=%d\n", i);
-            exit(1);
             error_cnt++;
         }
     }

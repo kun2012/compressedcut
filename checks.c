@@ -380,7 +380,6 @@ int ColorOfTrees(list<TreeDetails> trees, unsigned long long *pt)
 	for (list<TreeDetails>::iterator iter = trees.begin(); iter != trees.end(); iter++)
 	{
 		int c = ColorOfTree(iter->root, pt);
-        cout<<c<<endl;
 		//cout << "Found color: " << c << endl;
 		if (color < 0 || (c < color && c >= 0))
 			color = c;
