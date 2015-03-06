@@ -1,8 +1,6 @@
-#include <iostream>
 #include <stdio.h>
 #include "shared.h"
 #include "compressedcuts.h"
-using namespace std;
 
 struct flow* read_trace_file(FILE* traceFile) {
     struct flow *flows = new struct flow[MAX_TRACES];

@@ -113,22 +113,22 @@ void calc_dimensions_to_cut(node *curr_node,int *select_dim)
   for (int i = 0;i < MAXDIMENSIONS;++i)
   {
     select_dim[i] = 0;
-	if (unique_elements[i] != average && curr_node->boundary.field[i].high > curr_node->boundary.field[i].low)
-		areEqual = false;
+    if (unique_elements[i] != average && curr_node->boundary.field[i].high > curr_node->boundary.field[i].low)
+        areEqual = false;
   }
 
   if (areEqual)
   {
-	cout << "all are equal" << endl;
-	for (int i = 0; i < MAXDIMENSIONS; i++)
-	{
-		if (curr_node->boundary.field[i].high > curr_node->boundary.field[i].low)
-		{
-			cout << i << " " << unique_elements[i] << endl;
-			select_dim[i] = 1;
-			return;
-		}
-	}
+      cout << "all are equal" << endl;
+      for (int i = 0; i < MAXDIMENSIONS; i++)
+      {
+          if (curr_node->boundary.field[i].high > curr_node->boundary.field[i].low)
+          {
+              cout << i << " " << unique_elements[i] << endl;
+              select_dim[i] = 1;
+              return;
+          }
+      }
   }
 
   int dim_count = 0;
@@ -367,18 +367,18 @@ void calc_num_cuts_2D(node *root,int *dim)
           exit(1);
         }
       childlist.push_back(child);
-	  //printf("pushed! %u\n", childlist.size());
+      //printf("pushed! %u\n", childlist.size());
 
     }
 
     //  printf("\n");
 
     childlist.pop_front();
-	//printf("\tpopped %u\n", childlist.size());
+    //printf("\tpopped %u\n", childlist.size());
 
     ClearMem(curr_node);
 
-	//printf("%u\n", childlist.empty());
+    //printf("%u\n", childlist.empty());
   }
 
   root->cuts[dim[0]] = ( 1 << nump[0]);
@@ -412,8 +412,8 @@ void calc_cuts(node *curr_node)
      // curr_node->boundary.field[chosen_dim[i]].low,
      // curr_node->boundary.field[chosen_dim[i]].high);
 
-	// cout << "depth = " << curr_node->depth << endl;
-	// cout << curr_node->classifier.size() << " rules" << endl;
+    // cout << "depth = " << curr_node->depth << endl;
+    // cout << curr_node->classifier.size() << " rules" << endl;
 
   if (chosen_cnt > 2)
   {
@@ -436,9 +436,9 @@ void calc_cuts(node *curr_node)
   if (chosen_cnt == 2)
   {
     if (!fineOn)
-		calc_num_cuts_2D(curr_node,chosen_dim);
-	else
-		CalcEquiCuts2D(curr_node, chosen_dim);
+        calc_num_cuts_2D(curr_node,chosen_dim);
+    else
+        CalcEquiCuts2D(curr_node, chosen_dim);
   }
   else if (chosen_cnt == 1)
   {
