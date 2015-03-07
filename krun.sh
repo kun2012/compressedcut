@@ -22,6 +22,8 @@ mergingON=1
 fineOn=1
 ruleMoveUp=0
 
+mkdir -p $OUTPUT_DIR
+
 for i in acl1 ipc1 fw1
 do
     for j in 100 1K 5K 10K
