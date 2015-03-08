@@ -1,5 +1,5 @@
 #!/bin/bash
-INPUT_DIR="filters"
+INPUT_DIR="../filters"
 OUTPUT_DIR="output"
 
 #Hypercut -->not works fine
