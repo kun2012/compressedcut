@@ -81,15 +81,15 @@ int updateReads = 0;
 int updateWrites = 0;
 
 int setNumReps(int reps) {
-	MAXDIMENSIONS = DIMS_PER_REP * reps;
-	numReps = reps;
-	UpperBounds.resize(MAXDIMENSIONS);
-	for (int i = 0; i < reps; i++) {
-		int index = i * DIMS_PER_REP;
-		UpperBounds[index] = 4294967295;
-		UpperBounds[index + 1] = 4294967295;
-		UpperBounds[index + 2] = 65535;
-		UpperBounds[index + 3] = 65535;
-		UpperBounds[index + 4] = 255;
-	}
+    MAXDIMENSIONS = DIMS_PER_REP * reps;
+    numReps = reps;
+    UpperBounds.resize(MAXDIMENSIONS);
+    for (int i = 0; i < reps; i++) {
+        int index = i * DIMS_PER_REP;
+        UpperBounds[index] = 4294967295;
+        UpperBounds[index + 1] = 4294967295;
+        UpperBounds[index + 2] = 65535;
+        UpperBounds[index + 3] = 65535;
+        UpperBounds[index + 4] = 255;
+    }
 }

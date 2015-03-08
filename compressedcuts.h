@@ -31,10 +31,10 @@ extern int numReps;
 #define INTERNAL_NODE_SIZE (HEADER_SIZE + BOUNDARY_SIZE + PTR_SIZE)
 #define LEAF_NODE_SIZE HEADER_SIZE
 
-#define INTERNAL_COST_64	3
-#define INTERNAL_COST_128	2
-#define RULE_COST_64	3
-#define RULE_COST_128	2
+#define INTERNAL_COST_64    3
+#define INTERNAL_COST_128   2
+#define RULE_COST_64    3
+#define RULE_COST_128   2
 
 #define MAX_MEMBINS 4
 
@@ -81,8 +81,8 @@ struct node
   int count;
 
 public:
-	node();
-	~node();
+    node();
+    ~node();
 };
 
 struct TreeStat
@@ -129,10 +129,10 @@ struct MemBin
 
 struct TreeDetails
 {
-	TreeDetails() { wideFields.resize(MAXDIMENSIONS); }
-	node* root;
-	//bool wideFields[MAXDIMENSIONS];
-	vector<bool> wideFields;
+    TreeDetails() { wideFields.resize(MAXDIMENSIONS); }
+    node* root;
+    //bool wideFields[MAXDIMENSIONS];
+    vector<bool> wideFields;
 };
 
 /*
