@@ -29,7 +29,7 @@ int num_intervals = 7; //kun: upperbound of a node's children number
 double bin = 0.5; //for non-ip dimension
 double IPbin = 0.05; //for ip dimension
 int thirtyone = 0; //thirtyone == 1 --> make a difference between rules with one and no wildcards
-int Num_Rules_Moved_Up = 0; //kun: compressedcut do not used the move up optimation.
+int Num_Rules_Moved_Up = 0; //kun: compressedcut do not used the move up optimization.
 
 int trace_rule_num; //Added by kun
 

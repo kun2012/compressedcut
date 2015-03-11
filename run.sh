@@ -24,6 +24,10 @@ ruleMoveUp=0
 
 mkdir -p $OUTPUT_DIR
 
+outputfile="$OUTPUT_DIR"/"Efficuts.stat"
+
+>$outputfile
+
 for i in acl1 ipc1 fw1
 do
     for j in 100 1K 5K 10K
@@ -33,7 +37,8 @@ do
         rf="$INPUT_DIR"/"$filter".txt
         tf="$INPUT_DIR"/"$filter"_trace.txt
         ARGS=("-r$rf" "-w$tf" "-b$binth" "-s$spfac" "-m$hypercuts" "-u$ruleMoveUp" "-c$compressionON" "-g$binningON" "-z$mergingON" "-F$fineOn")
-        outputfile="$OUTPUT_DIR"/$filter.stat
+        #outputfile="$OUTPUT_DIR"/$filter.stat
+        echo -n -e "$filter\t" >> $outputfile
         ./compressedcuts ${ARGS[@]}>>$outputfile
     done
 done
