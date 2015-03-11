@@ -987,13 +987,14 @@ int mainNormal(int argc, char* argv[])
     PrintStats();
 #endif
 #ifdef KUN_TEST
-    double all_memory = 0.0;
+    unsigned long long all_memory = 0;
 
     for (list<TreeStat*>::iterator iter = Statistics.begin();
                 iter != Statistics.end();iter++)
     {
-        all_memory += (double)(*iter)->total_memory / 1024.0;
+        all_memory += (*iter)->total_memory;
     }
+    unsigned long long all_memory_in_kb = all_memory / 1024 + (all_memory % 1024 == 0? 0: 1);
 #endif
 
 //  BinPack(1,Statistics);
@@ -1007,7 +1008,7 @@ int mainNormal(int argc, char* argv[])
 #endif
 
 #ifdef KUN_TEST
-    printf("%.4lfKB\t", all_memory);
+    printf("%lldKB\t", all_memory_in_kb);
     printf("%.4lfMqps\n", (double)trace_rule_num / (double)elapsedTimeMicroSec);
 #endif
 }
