@@ -616,18 +616,15 @@ node* CreateRootNode(list<pc_rule*> p_classifier)
 
 void create_tree(list <pc_rule*> p_classifier)
 {
-#ifndef KUN_SPEED_TEST
+#ifndef KUN_TEST
   printf("Incoming No of Rules in this tree = %d\n",(int)p_classifier.size());
 #endif
 
   list <node*> worklist;
-
-
-
   node *curr_node;
 
   root = CreateRootNode(p_classifier);
-#ifndef KUN_SPEED_TEST
+#ifndef KUN_TEST
   cout << "Initial root size = " << root->classifier.size() << endl;
 #endif
 
@@ -702,7 +699,7 @@ void create_tree(list <pc_rule*> p_classifier)
         ClearMem(curr_node);
 
     }
-#ifndef KUN_SPEED_TEST
+#ifndef KUN_TEST
     printf("Outgoing number of rules in this tree = %u\n", (unsigned int)root->classifier.size());
 #endif
 
@@ -844,7 +841,7 @@ int mainNormal(int argc, char* argv[])
     while(fgets(s, 200, fpr) != NULL)numrules++;
     rewind(fpr);
 
-#ifndef KUN_SPEED_TEST
+#ifndef KUN_TEST
     printf("number of rules read from file = %d\n", numrules);
 #endif
 
@@ -936,7 +933,7 @@ int mainNormal(int argc, char* argv[])
             p_classifier.clear();
         }*/
 
-#ifndef KUN_SPEED_TEST
+#ifndef KUN_TEST
         // Correctness testing, added by kun
         isCorrect = CheckTrees(trees, p_classifier);
 #endif
@@ -986,20 +983,33 @@ int mainNormal(int argc, char* argv[])
     elapsedTimeMicroSec += (endTime.tv_usec - startTime.tv_usec);
 
     // Statistics
-#ifndef KUN_SPEED_TEST
+#ifndef KUN_TEST
     PrintStats();
+#endif
+#ifdef KUN_TEST
+    double all_memory = 0.0;
+
+    for (list<TreeStat*>::iterator iter = Statistics.begin();
+                iter != Statistics.end();iter++)
+    {
+        all_memory += (double)(*iter)->total_memory / 1024.0;
+    }
 #endif
 
 //  BinPack(1,Statistics);
 //  BinPack(2,Statistics);
 //  BinPack(3,Statistics);
 //  BinPack(4,Statistics);
-#ifndef KUN_SPEED_TEST
+#ifndef KUN_TEST
     printf("Correctness: %d\n",isCorrect);
     printf("Error count: %d\n", error_cnt);
     printf("Duration: %u us\n", (unsigned int)elapsedTimeMicroSec);
 #endif
-    printf("Query per second: %.2fMqps\n", (double)trace_rule_num / (double)elapsedTimeMicroSec);
+
+#ifdef KUN_TEST
+    printf("%.4lfKB\t", all_memory);
+    printf("%.4lfMqps\n", (double)trace_rule_num / (double)elapsedTimeMicroSec);
+#endif
 }
 
 

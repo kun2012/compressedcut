@@ -18,7 +18,7 @@
 extern int MAXDIMENSIONS;
 extern int numReps;
 
-#define KUN_SPEED_TEST
+#define KUN_TEST
 #define MAX_TRACES 100000
 
 #define MAX_ALLOWED_LEVELS 200

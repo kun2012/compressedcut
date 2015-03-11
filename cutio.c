@@ -210,7 +210,7 @@ void parseargs(int argc, char *argv[]) {
         exit(1);
     }
 
-#ifndef KUN_SPEED_TEST
+#ifndef KUN_TEST
     printf("******************************************\n");
     printf("Bucket Size =   %d\n", bucketSize);
     printf("Space Factor = %f\n", spfac);
@@ -389,7 +389,7 @@ int ComputeCutoffs()
     for (int i = 0;i < NUM_JUNK;i++)
     {
         Cutoffs[i] = numrules * Percents[i] / 100;
-#ifndef KUN_SPEED_TEST
+#ifndef KUN_TEST
         printf("Cutoffs[%d] = %lld\n",i,Cutoffs[i]); //Kun: may not include all rules!!!
 #endif
     }
@@ -446,13 +446,11 @@ void NodeStats(node *curr_node)
 
     // checks
     if ( curr_node->classifier.size() > bucketSize &&
-            curr_node->children.size() == 0 && curr_node->problematic == 0)
-    {
+            curr_node->children.size() == 0 && curr_node->problematic == 0) {
         printf("Error: This node is not cut further!\n");
-    printf("\tIt has %u rules!\n", (unsigned int)curr_node->classifier.size());
-    printf("\tactual-children: %u\n", (unsigned int)curr_node->actual_children.size());
-
-    PrintNode(curr_node);
+        printf("\tIt has %u rules!\n", (unsigned int)curr_node->classifier.size());
+        printf("\tactual-children: %u\n", (unsigned int)curr_node->actual_children.size());
+        PrintNode(curr_node);
         exit(1);
     }
 

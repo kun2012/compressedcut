@@ -490,7 +490,7 @@ void binRules(list<pc_rule> &ruleList) {
         rulelists[25] = 0;
     }
 
-#ifndef KUN_SPEED_TEST
+#ifndef KUN_TEST
     cout << "Number of rules binned: " << count << endl;
 #endif
 }
@@ -500,7 +500,7 @@ void binRules(list<pc_rule> &ruleList) {
  *  Will try to merge trees that have no more than one field that is not overlapping (i.e. where one tree is WC and one tree is not)
  */
 void MergeTrees() {
-#ifndef KUN_SPEED_TEST
+#ifndef KUN_TEST
     printf("Number of trees before merge: %d\n",numTrees);
 #endif
     int merged[26]; // array - if the value is 0 than that try is not merged, if it is 1 it has been and is NOT a candidate for merging anymore!
@@ -814,7 +814,7 @@ void MergeTrees() {
         }
     }
 #endif
-#ifndef KUN_SPEED_TEST
+#ifndef KUN_TEST
     printf("Number of trees after merge: %d\n",numTrees);
 #endif
 }
